@@ -20,7 +20,7 @@ local function call (params)
       },
       protocol = 'tlsv1',
       sink = ltn12.sink.table(response),
-      source=ltn12.source.string(content)
+      source = ltn12.source.string(content)
    }
 
    return json.decode(table.concat(response))

@@ -3,17 +3,17 @@ local json = require 'json'
 local ltn12 = require 'ltn12'
 local posix = require 'posix'
 
-ttrss_url = "https://ryuslash.org/tt-rss/api/"
-
 local ttrss_session_id = nil
 local avandu = {}
+
+avandu.ttrss_url = nil
 
 local function call (params)
    local content = json.encode(params)
    local response = {}
 
    r, code, headers, other = https.request{
-      url = ttrss_url,
+      url = avandu.ttrss_url,
       method = "POST",
       headers = {
          ["Content-Length"] = content:len()

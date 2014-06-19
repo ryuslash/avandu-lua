@@ -34,6 +34,8 @@ function avandu.login (user, password)
    if response.status == 0 then
       return response.content.session_id
    end
+
+   return nil
 end
 
 local function get_credentials()
@@ -60,6 +62,8 @@ function avandu.unread ()
    if response.status == 0 then
       return tonumber(response.content.unread)
    end
+
+   return -1
 end
 
 return avandu

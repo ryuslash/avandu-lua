@@ -12,15 +12,17 @@ local avandu = require 'avandu'
 avandu.ttrss_url = "https://example.com/tt-rss/api/"
 
 -- Create a widget to show the number of unread articles.
+local unread = avandu.unread() or '?'
 myrsslist = wibox.widget.textbox()
-myrsslist:set_text(string.format(" rss: %d", avandu.unread()))
+myrsslist:set_text(" rss: " .. unread)
 
 -- Create a timer to update the widget once every 60 seconds.
 myrsslisttimer = timer({ timeout = 60 })
 myrsslisttimer:connect_signal(
    "timeout",
    function ()
-      myrsslist:set_text(string.format(" rss: %d", avandu.unread()))
+      local unread = avandu.unread() or '?'
+      myrsslist:set_text(" rss: " .. unread)
    end
 )
 myrsslisttimer:start()

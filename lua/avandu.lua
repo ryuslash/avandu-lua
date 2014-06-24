@@ -113,9 +113,9 @@ local function get_credentials()
    local mode = posix.stat(credfile, 'mode')
 
    if not posix.access(credfile) then
-      error('The file ' .. credfile .. ' could not be found')
+      error('The file ' .. credfile .. ' could not be found', 0)
    elseif mode ~= 'rw-------' then
-      error('The file ' .. credfile .. ' has incorrect permissions')
+      error('The file ' .. credfile .. ' has incorrect permissions', 0)
    end
 
    local iofile = io.open(credfile)

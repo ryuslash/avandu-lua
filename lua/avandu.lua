@@ -13,20 +13,43 @@ local avandu = {}
 -- `https://example.com/tt-rss/api/`.
 avandu.ttrss_url = nil
 
+--- A class to hold data about error conditions.
+-- @field message Description of the error
+-- @field url The URL a request was sent to
+-- @field code The HTTP status code of the response
+-- @field status Description of the HTTP status code of the response
+avandu.Exception = {message = nil, url = nil, code = nil, status = nil}
+
+--- Create a new exception from the given parameter.
+-- Sets the metatable for the given parameter to the `Exception` class.
+-- @tparam table params The values for the Exception
+-- @treturn Exception `params`, but then with the metatable set to
+--   `Exception`.
+local function newex (params)
+   setmetatable(params, avandu.Exception)
+   return params
+end
+
 --- Send a request to Tiny Tiny RSS.
 -- What the request entails depends on the contents of params.
 -- @tparam table params Parameters for the request. This should at
 --   least contain a value for `op` and for most requests also a
---   `sid`.
--- @treturn table The return value always contains a table of sequence
---   number (`seq`), status (`status`) and the contents of the API's
---   response as a table (`content`). The value of the content depends
---   on the API method called.
+--   `sid`
+-- @treturn[1] table The return value always contains a table of
+--   sequence number (`seq`), status (`status`) and the contents of
+--   the API's response as a table (`content`). The value of the
+--   content depends on the API method called
+-- @treturn[2] nil Indication that something went wrong
+-- @treturn[2] Exception Information about what went wrong
 local function call (params)
    local content = json.encode(params)
    local response = {}
 
-   r, code, headers, other = https.request{
+   if not avandu.ttrss_url then
+      return nil, newex({message = 'no URL set'})
+   end
+
+   r, code, headers, status = https.request{
       url = avandu.ttrss_url,
       method = "POST",
       headers = {
@@ -37,18 +60,36 @@ local function call (params)
       source = ltn12.source.string(content)
    }
 
-   return json.decode(table.concat(response))
+   if code == 200 then
+      return json.decode(table.concat(response))
+   elseif code == 404 then
+      return nil, newex({message = 'URL not found',
+                         url = avandu.ttrss_url,
+                         code = code,
+                         status = status})
+   else
+      return nil, newex({message = 'Unexpected HTTP status returned',
+                         url = avandu.ttrss_url,
+                         code = code,
+                         status = status})
+   end
 end
 
 --- Get a session ID from tt-rss by logging in.
 -- If succesfull, this function will return the generated session ID.
 -- @tparam string user The username
 -- @tparam string password The password
--- @treturn string|nil The generated session ID or nil
+-- @treturn[1] string|nil The generated session ID or nil
+-- @treturn[2] nil Indication that something went wrong
+-- @treturn[2] Exception Infomation about what went wrong
 function avandu.login (user, password)
-   local response = call({op = "login",
-                          user = user,
-                          password = password})
+   local response, err = call({op = "login",
+                               user = user,
+                               password = password})
+
+   if not response then
+      return nil, err
+   end
 
    if response.status == 0 then
       return response.content.session_id
@@ -61,7 +102,7 @@ end
 -- The information is read from the file `$HOME/.avandu.json` which
 -- should contain a single json object with the fields `user` and
 -- `password`.
--- @treturn table The username and password.
+-- @treturn table The username and password
 local function get_credentials()
    local credfile = posix.getenv('HOME') .. '/.avandu.json'
    local iofile = io.open(credfile)
@@ -83,12 +124,19 @@ end
 
 --- Get the number of unread articles.
 -- This function will try to log in if that hasn't happened yet.
--- @treturn number The number of unread articles, or `-1` if there was an
---   error.
+-- @treturn[1] number The number of unread articles, or `-1` if there
+--   was an error
+-- @treturn[2] nil Indication that something went wrong
+-- @treturn[2] Exception Information about what went wrong
 function avandu.unread ()
    ensure_session_id()
-   local response = call({op = "getUnread",
-                          sid = ttrss_session_id})
+   local response, err = call({op = "getUnread",
+                               sid = ttrss_session_id})
+
+   if not response then
+      return nil, err
+   end
+
    if response.status == 0 then
       return tonumber(response.content.unread)
    end

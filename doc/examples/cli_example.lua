@@ -8,4 +8,10 @@ local avandu = require 'avandu'
 avandu.ttrss_url = "https://example.com/tt-rss/api/"
 
 -- Get the number of unread articles and print the result.
-print(avandu.unread() .. " unread article(s)")
+local count, err = avandu.unread()
+
+if count then
+   print(count .. " unread article(s)")
+else
+   print("An error occurred: " .. err.message)
+end

@@ -62,15 +62,17 @@
 </span>avandu.ttrss_url = <span class="string">"https://example.com/tt-rss/api/"</span>
 
 <span class="comment">-- Create a widget to show the number of unread articles.
-</span>myrsslist = wibox.widget.textbox()
-myrsslist:set_text(<span class="global">string</span>.format(<span class="string">" rss: %d"</span>, avandu.unread()))
+</span><span class="keyword">local</span> unread = avandu.unread() <span class="keyword">or</span> <span class="string">'?'</span>
+myrsslist = wibox.widget.textbox()
+myrsslist:set_text(<span class="string">" rss: "</span> .. unread)
 
 <span class="comment">-- Create a timer to update the widget once every 60 seconds.
 </span>myrsslisttimer = timer({ timeout = <span class="number">60</span> })
 myrsslisttimer:connect_signal(
    <span class="string">"timeout"</span>,
    <span class="keyword">function</span> ()
-      myrsslist:set_text(<span class="global">string</span>.format(<span class="string">" rss: %d"</span>, avandu.unread()))
+      <span class="keyword">local</span> unread = avandu.unread() <span class="keyword">or</span> <span class="string">'?'</span>
+      myrsslist:set_text(<span class="string">" rss: "</span> .. unread)
    <span class="keyword">end</span>
 )
 myrsslisttimer:start()

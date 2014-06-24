@@ -30,6 +30,7 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
 <li><a href="#Fields">Fields</a></li>
 </ul>
 
@@ -68,6 +69,13 @@
 	<tr>
 	<td class="name" nowrap><a href="#unread">unread ()</a></td>
 	<td class="summary">Get the number of unread articles.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Exception">Exception</a></td>
+	<td class="summary">A class to hold data about error conditions.</td>
 	</tr>
 </table>
 <h2><a href="#Fields">Fields</a></h2>
@@ -111,6 +119,15 @@
            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a> or <span class="type">nil</span></span>
         The generated session ID or nil
     </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        Indication that something went wrong</li>
+        <li>
+           <span class="types"><a class="type" href="index.html#Exception">Exception</a></span>
+        Infomation about what went wrong</li>
+    </ol>
 
 
 
@@ -130,9 +147,50 @@
     <ol>
 
            <span class="types"><span class="type">number</span></span>
-        The number of unread articles, or <code>-1</code> if there was an
-   error.
+        The number of unread articles, or <code>-1</code> if there
+   was an error
     </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        Indication that something went wrong</li>
+        <li>
+           <span class="types"><a class="type" href="index.html#Exception">Exception</a></span>
+        Information about what went wrong</li>
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="Tables"></a>Tables</h2>
+    <dl class="function">
+    <dt>
+    <a name = "Exception"></a>
+    <strong>Exception</strong>
+    </dt>
+    <dd>
+    A class to hold data about error conditions.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">message</span>
+         Description of the error
+        </li>
+        <li><span class="parameter">url</span>
+         The URL a request was sent to
+        </li>
+        <li><span class="parameter">code</span>
+         The HTTP status code of the response
+        </li>
+        <li><span class="parameter">status</span>
+         Description of the HTTP status code of the response
+        </li>
+    </ul>
+
 
 
 

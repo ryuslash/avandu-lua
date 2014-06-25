@@ -55,15 +55,19 @@
 </span><span class="keyword">local</span> avandu = <span class="global">require</span> <span class="string">'avandu'</span>
 
 <span class="comment">-- Set the proper URL for the Tiny Tiny RSS API.
-</span>avandu.ttrss_url = <span class="string">"https://example.com/tt-rss/api/"</span>
+</span>avandu.ttrss_url = <span class="string">"https://ryuslash.org/tt-rss/api/"</span>
 
 <span class="comment">-- Get the number of unread articles and print the result.
-</span><span class="keyword">local</span> count, err = avandu.unread()
+</span><span class="keyword">local</span> status, count, err = <span class="global">pcall</span>(avandu.unread)
 
-<span class="keyword">if</span> count <span class="keyword">then</span>
-   <span class="global">print</span>(count .. <span class="string">" unread article(s)"</span>)
+<span class="keyword">if</span> status <span class="keyword">then</span>
+   <span class="keyword">if</span> count <span class="keyword">then</span>
+      <span class="global">print</span>(count .. <span class="string">" unread article(s)"</span>)
+   <span class="keyword">else</span>
+      <span class="global">print</span>(<span class="string">"An error occurred: "</span> .. err.message)
+   <span class="keyword">end</span>
 <span class="keyword">else</span>
-   <span class="global">print</span>(<span class="string">"An error occurred: "</span> .. err.message)
+   <span class="global">print</span>(<span class="string">"An exception occurred: "</span> .. count)
 <span class="keyword">end</span></pre>
 
 

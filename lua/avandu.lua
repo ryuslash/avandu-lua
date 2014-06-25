@@ -103,8 +103,21 @@ end
 -- should contain a single json object with the fields `user` and
 -- `password`.
 -- @treturn table The username and password
+-- @raise
+-- - "The file ... could not be found" if the `.avandu.json` file
+--   could not be accessed in the correct place.
+-- - "The file ... has incorrect permissions" when the `.avandu.json`
+--   file is not readable and writable *only* by the user.
 local function get_credentials()
-   local credfile = posix.getenv('HOME') .. '/.avandu.json'
+   local credfile = os.getenv('HOME') .. '/.avandu.json'
+   local mode = posix.stat(credfile, 'mode')
+
+   if not posix.access(credfile) then
+      error('The file ' .. credfile .. ' could not be found', 0)
+   elseif mode ~= 'rw-------' then
+      error('The file ' .. credfile .. ' has incorrect permissions', 0)
+   end
+
    local iofile = io.open(credfile)
    local contents = iofile:read("*a")
 

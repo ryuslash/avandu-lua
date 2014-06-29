@@ -4,7 +4,7 @@ env:
   - LUA="lua"
 
 install:
-  - sudo apt-get install luarocks
+  - sudo apt-get install luarocks openssl
   - sudo luarocks install busted
   - sudo luarocks install luasec
   - sudo luarocks install luajson

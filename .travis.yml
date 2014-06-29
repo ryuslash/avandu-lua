@@ -12,7 +12,7 @@ install:
   - sudo luarocks install luajson
   - sudo luarocks install luaposix
 
-script: "busted -m 'lua/?.lua'"
+script: "busted -m 'lua/?.lua' -o TAP"
 
 notifications:
   email:

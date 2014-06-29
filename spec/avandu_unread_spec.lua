@@ -39,6 +39,8 @@ describe('Getting unread articles from Tiny Tiny RSS', function ()
     posix.stat = ureadable
     io.open = fakefile
 
+    avandu.ttrss_url = nil
+
     local result, err = avandu.unread()
 
     assert.falsy(result)

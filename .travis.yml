@@ -3,6 +3,10 @@ language: erlang
 env:
   - LUA="lua"
 
+branches:
+  except:
+    - gh-pages
+
 install:
   - sudo apt-get update
   - sudo apt-get install luarocks libssl1.0.0

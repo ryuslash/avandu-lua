@@ -1,0 +1,20 @@
+language: erlang
+
+env:
+  - LUA="lua"
+
+install:
+  - sudo apt-get install luarocks
+  - sudo luarocks install busted
+  - sudo luarocks install luasec
+  - sudo luarocks install luajson
+  - sudo luarocks install luaposix
+  - sudo luarocks install luasocket
+
+script: "busted -m 'lua/?.lua'"
+
+notifications:
+  email:
+    recipients:
+      - tom@ryuslash.org
+    on_failure: always

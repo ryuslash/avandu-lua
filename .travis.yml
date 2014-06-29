@@ -5,10 +5,10 @@ env:
 
 install:
   - sudo apt-get update
-  - sudo apt-get install luarocks libssl-dev
+  - sudo apt-get install luarocks libssl1.0.0
   - sudo luarocks install busted
   - sudo luarocks install luasocket
-  - sudo luarocks install luasec
+  - sudo luarocks install luasec OPENSSL_LIBDIR=/lib/i386-linux-gnu
   - sudo luarocks install luajson
   - sudo luarocks install luaposix
 

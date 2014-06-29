@@ -1,0 +1,21 @@
+language: erlang
+
+env:
+  - LUA="lua"
+
+install:
+  - sudo apt-get update
+  - sudo apt-get install luarocks libssl1.0.0
+  - sudo luarocks install busted
+  - sudo luarocks install luasocket
+  - sudo luarocks install luasec OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu
+  - sudo luarocks install luajson
+  - sudo luarocks install luaposix
+
+script: "busted -m 'lua/?.lua' -o TAP"
+
+notifications:
+  email:
+    recipients:
+      - tom@ryuslash.org
+    on_failure: always

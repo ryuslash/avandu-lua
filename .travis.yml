@@ -4,12 +4,13 @@ env:
   - LUA="lua"
 
 install:
+  - sudo apt-get update
   - sudo apt-get install luarocks openssl
   - sudo luarocks install busted
+  - sudo luarocks install luasocket
   - sudo luarocks install luasec
   - sudo luarocks install luajson
   - sudo luarocks install luaposix
-  - sudo luarocks install luasocket
 
 script: "busted -m 'lua/?.lua'"
 

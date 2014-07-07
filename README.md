@@ -55,3 +55,4 @@ can be accessed.
 
         avandu.ttrss_url = 'https://example.com/tt-rss/api/'
 
+[![Build Status](https://travis-ci.org/ryuslash/avandu-lua.svg?branch=master)](https://travis-ci.org/ryuslash/avandu-lua)

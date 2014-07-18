@@ -7,6 +7,10 @@ local avandu = require 'avandu'
 -- Set the proper URL for the Tiny Tiny RSS API.
 avandu.ttrss_url = "https://ryuslash.org/tt-rss/api/"
 
+-- local consolelog = require 'logging.console'
+-- logger = consolelog()
+-- avandu.set_logger(logger)
+
 -- Get the number of unread articles and print the result.
 local status, count, err = pcall(avandu.unread)
 

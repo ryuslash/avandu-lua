@@ -24,9 +24,15 @@ local https = require 'ssl.https'
 local json = require 'json'
 local ltn12 = require 'ltn12'
 local posix = require 'posix'
+local logging = require 'logging'
 
 local ttrss_session_id = nil
 local avandu = {}
+
+--- A dummy logger
+local logger = logging.new(function (self, level, message)
+      return true
+end)
 
 --- The url where the Tiny Tiny RSS API resides.
 -- For example, this should be something like
@@ -69,6 +75,9 @@ local function call (params)
       return nil, newex({message = 'no URL set'})
    end
 
+   logger:debug("Requesting with op `%s' from `%s'",
+                params.op, avandu.ttrss_url)
+
    r, code, headers, status = https.request{
       url = avandu.ttrss_url,
       method = "POST",
@@ -79,6 +88,9 @@ local function call (params)
       sink = ltn12.sink.table(response),
       source = ltn12.source.string(content)
    }
+
+   logger:debug("Request returned `%s' `%s' `%s' `%s'",
+                r, code, logging.tostring(headers), status)
 
    if code == 200 then
       return json.decode(table.concat(response))
@@ -116,6 +128,12 @@ function avandu.login (user, password)
    end
 
    return nil
+end
+
+--- Set the logger to use.
+-- @param newlogger The logger to use
+function avandu.set_logger (newlogger)
+   logger = newlogger
 end
 
 --- Read the credentials necessary for loggin-in to Tiny Tiny RSS.

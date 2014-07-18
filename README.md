@@ -57,6 +57,16 @@ can be accessed.
 
         avandu.ttrss_url = 'https://example.com/tt-rss/api/'
 
+### Logging
+
+Avandu Lua occasionally logs some information. By default a dummy
+logger is used which doesn't output anything, this is to keep the log
+messages from clogging up whatever you use it with. To actually see
+the logging you can specify your own logger.
+
+    local consolelog = require 'logging.console'
+    avandu.set_logger(consolelog())
+
 ## License
 
 This program is free software: you can redistribute it and/or modify

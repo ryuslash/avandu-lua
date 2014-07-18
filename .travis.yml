@@ -15,6 +15,7 @@ install:
   - sudo luarocks install luasec OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu
   - sudo luarocks install luajson
   - sudo luarocks install luaposix
+  - sudo luarocks install lualogging
 
 script: "busted -m 'lua/?.lua' -o TAP"
 

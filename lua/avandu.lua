@@ -26,7 +26,6 @@ local ltn12 = require 'ltn12'
 local posix = require 'posix'
 local logging = require 'logging'
 
-local ttrss_session_id = nil
 local avandu = {}
 
 --- A dummy logger
@@ -38,6 +37,11 @@ end)
 -- For example, this should be something like
 -- `https://example.com/tt-rss/api/`.
 avandu.ttrss_url = nil
+
+--- The session id that was fetched from Tiny Tiny RSS.
+-- Used after loggin-in to identify the user to Tiny Tiny RSS when
+-- makin API calls.
+avandu.session_id = nil
 
 --- A class to hold data about error conditions.
 -- @field message Description of the error
@@ -167,9 +171,9 @@ end
 --- Make sure we have a session ID.
 -- If no session ID has been provided, log in to get one.
 local function ensure_session_id ()
-   if not ttrss_session_id then
+   if not avandu.session_id then
       local creds = get_credentials()
-      ttrss_session_id = avandu.login(creds.user, creds.password)
+      avandu.session_id = avandu.login(creds.user, creds.password)
    end
 end
 
@@ -182,7 +186,7 @@ end
 function avandu.unread ()
    ensure_session_id()
    local response, err = call({op = "getUnread",
-                               sid = ttrss_session_id})
+                               sid = avandu.session_id})
 
    if not response then
       return nil, err

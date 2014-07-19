@@ -17,7 +17,7 @@ install:
   - sudo luarocks install luaposix
   - sudo luarocks install lualogging
 
-script: "busted -m 'lua/?.lua' -o TAP"
+script: "busted -m 'lua/?.lua;spec/?.lua' -o TAP"
 
 notifications:
   email:

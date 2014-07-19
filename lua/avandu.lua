@@ -150,7 +150,7 @@ end
 --   could not be accessed in the correct place.
 -- - "The file ... has incorrect permissions" when the `.avandu.json`
 --   file is not readable and writable *only* by the user.
-local function get_credentials()
+local function get_credentials ()
    local credfile = os.getenv('HOME') .. '/.avandu.json'
    local mode = posix.stat(credfile, 'mode')
 
@@ -175,6 +175,28 @@ local function ensure_session_id ()
       local creds = get_credentials()
       avandu.session_id = avandu.login(creds.user, creds.password)
    end
+end
+
+
+--- Get the API level number
+-- @treturn[1] number The API level of the Tiny Tiny RSS instance, or
+--   0 if the operation could not be called.
+-- @treturn[2] nil Indication that something went wrong
+-- @treturn[2] Exception Information about what went wrong
+function avandu.get_api_level ()
+   ensure_session_id()
+   local response, err = call({op = "getApiLevel",
+                               sid = avandu.session_id})
+
+   if not response then
+      return nil, err
+   end
+
+   if response.status == 0 then
+      return tonumber(response.content.level)
+   end
+
+   return 0
 end
 
 --- Get the number of unread articles.

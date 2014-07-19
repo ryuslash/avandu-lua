@@ -74,6 +74,14 @@
 	<td class="summary">Get a session ID from tt-rss by logging in.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#set_logger">set_logger (newlogger)</a></td>
+	<td class="summary">Set the logger to use.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#get_api_level">get_api_level ()</a></td>
+	<td class="summary">Get the API level number</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#unread">unread ()</a></td>
 	<td class="summary">Get the number of unread articles.</td>
 	</tr>
@@ -90,6 +98,10 @@
 	<tr>
 	<td class="name" nowrap><a href="#ttrss_url">ttrss_url</a></td>
 	<td class="summary">The url where the Tiny Tiny RSS API resides.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#session_id">session_id</a></td>
+	<td class="summary">The session id that was fetched from Tiny Tiny RSS.</td>
 	</tr>
 </table>
 
@@ -134,6 +146,56 @@
         <li>
            <span class="types"><a class="type" href="index.html#Exception">Exception</a></span>
         Infomation about what went wrong</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_logger"></a>
+    <strong>set_logger (newlogger)</strong>
+    </dt>
+    <dd>
+    Set the logger to use.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">newlogger</span>
+         The logger to use
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "get_api_level"></a>
+    <strong>get_api_level ()</strong>
+    </dt>
+    <dd>
+    Get the API level number
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The API level of the Tiny Tiny RSS instance, or
+   0 if the operation could not be called.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        Indication that something went wrong</li>
+        <li>
+           <span class="types"><a class="type" href="index.html#Exception">Exception</a></span>
+        Information about what went wrong</li>
     </ol>
 
 
@@ -214,6 +276,22 @@
     The url where the Tiny Tiny RSS API resides.
  For example, this should be something like
  <code>https://example.com/tt-rss/api/</code>.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "session_id"></a>
+    <strong>session_id</strong>
+    </dt>
+    <dd>
+    The session id that was fetched from Tiny Tiny RSS.
+ Used after loggin-in to identify the user to Tiny Tiny RSS when
+ makin API calls.
 
 
 

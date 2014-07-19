@@ -130,6 +130,19 @@ can be accessed.</p>
 avandu.ttrss_url = <span class="string">'https://example.com/tt-rss/api/'</span>
 </pre>
 
+<h3>Logging</h3>
+
+<p>Avandu Lua occasionally logs some information. By default a dummy
+logger is used which doesn't output anything, this is to keep the log
+messages from clogging up whatever you use it with. To actually see
+the logging you can specify your own logger.</p>
+
+
+<pre>
+<span class="keyword">local</span> consolelog = <span class="global">require</span> <span class="string">'logging.console'</span>
+avandu.set_logger(consolelog())
+</pre>
+
 <p><a name="License"></a></p>
 <h2>License</h2>
 

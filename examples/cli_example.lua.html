@@ -57,6 +57,23 @@
 <span class="comment">-- Set the proper URL for the Tiny Tiny RSS API.
 </span>avandu.ttrss_url = <span class="string">"https://ryuslash.org/tt-rss/api/"</span>
 
+<span class="comment">-- local consolelog = require 'logging.console'
+</span><span class="comment">-- logger = consolelog()
+</span><span class="comment">-- avandu.set_logger(logger)
+</span>
+<span class="comment">-- Get the API level of the installed Tiny Tiny RSS instance.
+</span><span class="keyword">local</span> status, level, err = <span class="global">pcall</span>(avandu.get_api_level)
+
+<span class="keyword">if</span> status <span class="keyword">then</span>
+   <span class="keyword">if</span> level <span class="keyword">then</span>
+      <span class="global">print</span>(<span class="string">"Your instance runs API level "</span> .. level)
+   <span class="keyword">else</span>
+      <span class="global">print</span>(<span class="string">"An error occurred: "</span> .. err.message)
+   <span class="keyword">end</span>
+<span class="keyword">else</span>
+   <span class="global">print</span>(<span class="string">"An exception occurred: "</span> .. level)
+<span class="keyword">end</span>
+
 <span class="comment">-- Get the number of unread articles and print the result.
 </span><span class="keyword">local</span> status, count, err = <span class="global">pcall</span>(avandu.unread)
 

@@ -21,7 +21,7 @@ describe("Logging in to Tiny Tiny RSS", function()
 
   it("should return an error if no URL is set", function ()
     avandu.ttrss_url = nil
-    local results, err = avandu.login()
+    local results, err = avandu.login('user', 'password')
     assert.falsy(results)
     assert.are.same(err, {message = 'no URL set'})
   end)
@@ -34,6 +34,8 @@ describe("Logging in to Tiny Tiny RSS", function()
        assert.are.same(params.protocol, 'tlsv1')
        assert.truthy(params.sink)
        assert.truthy(params.source)
+
+       return 1, 200, {}, ''
     end
 
     avandu.ttrss_url = url
@@ -45,19 +47,19 @@ describe("Logging in to Tiny Tiny RSS", function()
        params.sink(
           '{"status": 0, "content": {"session_id": 5}}'
        )
-       return '', 200, '', ''
+       return 1, 200, {}, ''
     end
 
-    local results = avandu.login()
+    local results = avandu.login('user', 'password')
     assert.are.same(5, results)
   end)
 
   it("should return an exception upon a 404 HTTP error", function ()
     https.request = function (params)
-       return '', 404, {}, 'Not Found'
+       return 1, 404, {}, 'Not Found'
     end
 
-    local results, err = avandu.login()
+    local results, err = avandu.login('login', 'password')
     assert.falsy(results)
     assert.are.same({message = 'URL not found', url = url, code = 404,
                      status = 'Not Found'}, err)
@@ -66,10 +68,10 @@ describe("Logging in to Tiny Tiny RSS", function()
 
   it("should return an exception upon any unexpected HTTP status", function()
     https.request = function (params)
-       return '', 500, {}, 'Internal Server Error'
+       return 1, 500, {}, 'Internal Server Error'
     end
 
-    local results, err = avandu.login()
+    local results, err = avandu.login('login', 'password')
     assert.falsy(results)
     assert.are.same({message = 'Unexpected HTTP status returned',
                      url = url, code = 500,
@@ -80,10 +82,10 @@ describe("Logging in to Tiny Tiny RSS", function()
   it("should return nil for a non-0 status", function ()
     https.request = function (params)
        params.sink('{"status": 1}')
-       return '', 200, {}, ''
+       return 1, 200, {}, ''
     end
 
-    local results, err = avandu.login()
+    local results, err = avandu.login('user', 'password')
     assert.falsy(results)
     assert.falsy(err)
   end)
